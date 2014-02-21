@@ -26,22 +26,14 @@ OR OTHER SIMILAR COSTS.
 /********************************************************
  USER DEFINITIONS
 ********************************************************/
-#define TXPIN 3     //software UART Transmit pin - Connect this pin to SmartWAV RX pin
-#define RXPIN 2     //software UART Receive pin - Connect this pin to SmartWAV TX pin
-#define RESET 4     //reset - Connect this pin to SmartWAV reset pin
 
-
-
-/********************************************************
- END OF USER DEFINITIONS - not modify
-********************************************************/
 //General definitions (not modify)
 #define audioOFF 0
 #define audioON 1
-#define X0.5 0
-#define X1.0 1
-#define X1.5 2
-#define X2.0 3
+#define X05 0
+#define X10 1
+#define X15 2
+#define X20 3
 #define DISABLE 0
 #define ENABLE 1
 #define MAX 0xFF
@@ -52,10 +44,18 @@ OR OTHER SIMILAR COSTS.
 class SMARTWAV{
 	
 public:
-    SMARTWAV();
+    SMARTWAV(int _tx, int _rx, int _res);
 	
+    int pin_tx;
+    int pin_rx;
+    int pin_res;
+
+	void sendData(uint8_t DataSenTr);
+	
+	uint8_t receiveData();
+
 	void init();
-	
+
 	void reset();
 
 	uint8_t sleep(); 

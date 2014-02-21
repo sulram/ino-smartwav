@@ -23,75 +23,72 @@ OR OTHER SIMILAR COSTS.
 #include "SMARTWAV.h"
 
 // SMART WAV DEFAULT BAUD RATE: 9600bps
-// Be sure to assign correct pins to TXPIN, RXPIN and Reset in SMARTWAV.h file
-/*default pin assignation in SMARTWAV.h:
-#define TXPIN 3     //software UART Transmit pin - Connect this pin to SmartWAV RX pin
-#define RXPIN 2     //software UART Receive pin - Connect this pin to SmartWAV TX pin
-#define RESET 4     //reset - Connect this pin to SmartWAV reset pin
-*/
+
+SMARTWAV::SMARTWAV(int _tx, int _rx, int _res){
+  pin_tx = _tx;
+  pin_rx = _rx;
+  pin_res = _res;
+  init();
+}
 
 /*---------------------------------------------------------*/
 /* 9600bps putchar Software UART Sub-routine                             */
 /*---------------------------------------------------------*/
-static void sendData(uint8_t DataSenTr)//Sends a UART character by software
+void SMARTWAV::sendData(uint8_t DataSenTr)//Sends a UART character by software
 {
  uint8_t i=0;  
  
- digitalWrite(TXPIN, LOW);     //set the pin low
+ digitalWrite(pin_tx, LOW);     //set the pin low
  delayMicroseconds(99);                //102us plus instructions time = 104us
  for(i=0;i<8;i++){
   if(DataSenTr & 0x01){
-	  digitalWrite(TXPIN, HIGH);     //set the pin high
+    digitalWrite(pin_tx, HIGH);     //set the pin high
   }else{
-	  digitalWrite(TXPIN, LOW);     //set the pin low
+    digitalWrite(pin_tx, LOW);     //set the pin low
   }
   DataSenTr= DataSenTr>>1;     //Rotate right one bit
   delayMicroseconds(98);               //102us plus instructions time = 104us
  }
- digitalWrite(TXPIN, HIGH);     //set the pin high
+ digitalWrite(pin_tx, HIGH);     //set the pin high
  //delayMicroseconds(98);                //101us plus instructions time = 104us 
 }
 
 /*---------------------------------------------------------*/
 /* 9600bps getchar Software UART Sub-routine                             */
-/*---------------------------------------------------------*/
-static uint8_t receiveData()     //Receives a UART character by software
+/*---------------------------------------------------------*/ 
+uint8_t SMARTWAV::receiveData()     //Receives a UART character by software
 {
  uint8_t i=0;
  uint8_t Data=0; 
 
- while(digitalRead(RXPIN));              //Wait for Start Bit
+ while(digitalRead(pin_rx));              //Wait for Start Bit
  delayMicroseconds(148);                //Delay of 151us to read at the middle of the bits
  for(i=0;i<8;i++){
-  if(digitalRead(RXPIN)){
+  if(digitalRead(pin_rx)){
    Data= Data >> 1;              //Rotate left 0
-   Data= Data | 0x80;            //Set 1 to bit		
+   Data= Data | 0x80;            //Set 1 to bit   
   }else{                         //else bit received is 1
    Data= Data >> 1;              //Rotate left 0
-   Data= Data | 0x00;            //Set 1 to bit	
+   Data= Data | 0x00;            //Set 1 to bit 
   }
   delayMicroseconds(98);                 //100us plus instructions time = 104us
  }
  return Data;                     //Return received character
 }
 
-SMARTWAV::SMARTWAV(){
-  init();
-}
-
 /********** high level commands, for the user! */
 void SMARTWAV::init(){           //configure the arduino board for SMARTWAV board
-	digitalWrite(TXPIN, HIGH);     //set the pin low
-	pinMode(TXPIN,OUTPUT);
-	pinMode(RXPIN,INPUT);
-	pinMode(RESET, OUTPUT); 
-	digitalWrite(RESET, HIGH);   //set the pin to 5v to avoid reset 
+	digitalWrite(pin_tx, HIGH);     //set the pin low
+	pinMode(pin_tx,OUTPUT);
+	pinMode(pin_rx,INPUT);
+	pinMode(pin_res, OUTPUT); 
+	digitalWrite(pin_res, HIGH);   //set the pin to 5v to avoid reset 
 }
 
 void SMARTWAV::reset(){          //Reset the SMARTWAV board
-  digitalWrite(RESET, LOW);      //set the pin to GND to reset 
+  digitalWrite(pin_res, LOW);      //set the pin to GND to reset 
   delay(500); 
-  digitalWrite(RESET, HIGH);     //set the pin to 5v to end reset
+  digitalWrite(pin_res, HIGH);     //set the pin to 5v to end reset
   delay(500);	
 } 
 
