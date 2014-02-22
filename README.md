@@ -1,35 +1,31 @@
-SMARTWAV ARDUINO LIBRARY
-========================
+Vizic SmartWAV Arduino Library
+==============================
 
 This library help the user to communicate the SMARTWAV BOARD with the arduino board, be sure to check pinout while connecting to the SMARTWAV!
 
+Create a folder named `SMARTWAV` and place at `Arduino/libraries` deafult directory.
 
-#### Where to place this entire folder(SMARTWAV)?
+Restart Arduino IDE to recognize the library and enjoy!
 
-place it in the arduino PC root:
+### About this version / branch
 
-```
-arduino-\arduino-1.0\libraries\SMARTWAV
-```
+Changes on the library allow multiple instances of SmartWAV connected to Arduino.
 
-restart arduino IDE to recognize the library and enjoy!
+### About original library
 
-be sure to check out all the SMARTWAV examples 100% ready to compile and load in our website
+* __Arduino Playground__  
+http://playground.arduino.cc/SmartWAV/SmartWAV
 
----
+* __Download__  
+http://sourceforge.net/projects/smartwavarduinolibrary/
 
-SMARTWAV board:
+* __SMARTWAV board__  
 http://vizictechnologies.com/#/smart-wav/4559021187
 
-Software:
+* __Software__  
 http://vizictechnologies.com/#/software-demos-sw/4560115377
 
-VIZIC TECHNOLOGIES Copyright 2012
-
+* __VIZIC TECHNOLOGIES Copyright 2012__  
 www.vizictechnologies.com
 
----
 
-### Updates:
-
-* change on the library for multiple instances
